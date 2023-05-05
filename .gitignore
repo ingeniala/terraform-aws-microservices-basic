@@ -1,0 +1,7 @@
+*.tfstate*
+**/.terraform
+**/.terraform.lock.hcl
+**/*.out
+environments/
+.DS_Store
+**/.DS_Store
