@@ -84,7 +84,7 @@ module "database_replica" {
   create_db_instance = local.replication_enabled
 
   # Source database. For cross-region use db_instance_arn
-  replicate_source_db    = module.database_master.db_instance_id
+  replicate_source_db  = module.database_master.db_instance_id
  
   engine               = local.engine
   engine_version       = local.version

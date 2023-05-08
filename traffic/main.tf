@@ -63,7 +63,7 @@ module "microservices_api_gateway" {
   # Specify a common global integration with the defined Authorizer
   integrations = var.create_api_lambda_authorizer ? {
 
-    "ANY /" = {
+    "ANY /{proxy+}" = {
       description            = "Default route integration with authentication"
       operation_name         = "ANY authenticated operation"
       connection_type        = "VPC_LINK"
@@ -127,7 +127,7 @@ module "api_gateway_security_group" {
   version = "~> 4.0"
 
   name        = "${local.apigw_name}-api-gateway-sg"
-  description = "API Gateway security group for allowing traffic from API Gateway through VPC Link"
+  description = "Security group for allowing traffic from API Gateway through VPC Link"
   vpc_id      = var.vpc_id
 
   ingress_cidr_blocks = ["0.0.0.0/0"]
@@ -183,7 +183,7 @@ data "aws_route53_zone" "main" {
 
 module "main_acm" {
   source  = "terraform-aws-modules/acm/aws"
-  version = "~> 4"
+  version = "~> 4.3"
 
   domain_name = local.root_domain_name
   zone_id     = data.aws_route53_zone.main.zone_id

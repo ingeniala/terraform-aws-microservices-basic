@@ -112,6 +112,12 @@ module "root_website_cdn" {
     }
   }
 
+  # custom_error_response = [{
+  #   error_code         = 404
+  #   response_code      = 200
+  #   response_page_path = "/index.html"
+  # }]
+
   viewer_certificate = {
     acm_certificate_arn      = var.acm_certificate_arn
     ssl_support_method       = "sni-only"
@@ -236,6 +242,12 @@ module "www_website_cdn" {
       }
     }
   }
+
+  # custom_error_response = [{
+  #   error_code         = 404
+  #   response_code      = 200
+  #   response_page_path = "/index.html"
+  # }]
 
   viewer_certificate = {
     acm_certificate_arn      = var.acm_certificate_arn

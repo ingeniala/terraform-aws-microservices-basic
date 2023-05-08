@@ -41,7 +41,7 @@ variable "eks_cluster_version" {
 }
 
 variable "eks_cluster_max_size" {
-  type        = string
+  type        = number
   description = "EKS Cluster maximum amount of worker nodes"
 }
 
@@ -52,6 +52,7 @@ variable "eks_cluster_auth_map_roles" {
     username = string
     groups   = list(string)
   }))
+  default = [{}]
 }
 
 variable "eks_cluster_auth_map_users" {
@@ -61,6 +62,7 @@ variable "eks_cluster_auth_map_users" {
     username = string
     groups   = list(string)
   }))
+  default = [{}]
 }
 
 variable "eks_cluster_auth_map_accounts" {
@@ -70,6 +72,7 @@ variable "eks_cluster_auth_map_accounts" {
     username = string
     groups   = list(string)
   }))
+  default = [{}]
 }
 
 variable "eks_cluster_node_group_instance_types" {
@@ -80,16 +83,19 @@ variable "eks_cluster_node_group_instance_types" {
 variable "eks_cluster_node_group_ami" {
   type        = string
   description = "EKS Cluster Main Node group AMI machine"
+  default     = "BOTTLEROCKET_x86_64"
 }
 
 variable "eks_cluster_node_group_platform" {
   type        = string
   description = "EKS Cluster Main Node group platform"
+  default     = "bottlerocket"
 }
 
 variable "eks_cluster_node_group_capacity" {
   type        = string
   description = "EKS Cluster Main Node group capacity type"
+  default     = "ON_DEMAND"
 }
 
 variable "eks_cluster_node_group_disk_size" {
@@ -125,6 +131,7 @@ variable "bastion_instance_class" {
 variable "bastion_public_visible" {
   type        = bool
   description = "Whether to associate a public EIP to Bastion server"
+  default     = true
 }
 
 # Registry
@@ -137,11 +144,13 @@ variable "registry_repositories" {
 variable "registry_protected_tags" {
   description = "List of ECR protected tags which won't never be expired on any repository."
   type        = list(string)
+  default     = []
 }
 
 variable "registry_full_access_users" {
   description = "List of users with full access privileges to ECR."
   type        = list(string)
+  default     = []
 }
 
 # Storage
@@ -169,6 +178,7 @@ variable "database_engine_version" {
 variable "database_replication_enabled" {
   description = "Whether to enable replication mode"
   type        = bool
+  default     = false
 }
 
 variable "database_instance_type" {
@@ -189,16 +199,19 @@ variable "database_max_allocated_storage" {
 variable "database_enable_cloudwatch_logging" {
   type        = bool
   description = "Whether to enable cloudwatch log group creation"
+  default     = false
 }
 
 variable "database_cloudwatch_logging_exports" {
   type        = list(string)
   description = "What to export to cloudwatch log group"
+  default     = []
 }
 
 variable "database_backup_retention_period" {
   type        = number
   description = "Database backup retention period"
+  default     = 1
 }
 
 # Traffic Access
@@ -222,46 +235,55 @@ variable "traffic_apigw_api_version" {
 variable "traffic_create_api_stage" {
   type        = bool
   description = "Whether to create default stage to publish API"
+  default     = false
 }
 
 variable "traffic_create_api_routes" {
   type        = bool
   description = "Whether to create routes and integrations"
+  default     = false
 }
 
 variable "traffic_create_api_lambda_authorizer" {
   type        = bool
   description = "Whether to create lambda authorizers to enable API authentication"
+  default     = false
 }
 
 variable "traffic_api_authorizer_bucket_name" {
   type        = string
   description = "S3 bucket name where the package to create lambda authorizer is located"
+  default     = null
 }
 
 variable "traffic_api_authorizer_bucket_key" {
   type        = string
   description = "S3 bucket key where the package to create lambda authorizer is located"
+  default     = null
 }
 
 variable "traffic_api_authorizer_runtime" {
   type        = string
   description = "Lambda authorizer software runtime to be defined"
+  default     = null
 }
 
 variable "traffic_api_authorizer_env_vars" {
   type        = map(string)
   description = "Lambda authorizer environment variables to be defined"
+  default     = {}
 }
 
 variable "traffic_api_request_mappings" {
   type        = map(string)
   description = "Mappings applied to request parameters that the API Gateway should perform"
+  default     = {}
 }
 
 variable "traffic_api_response_mappings" {
   type        = map(string)
   description = "Mappings applied to response parameters that the API Gateway should perform"
+  default     = {}
 }
 
 variable "traffic_certificate_subjective_names" {

@@ -21,7 +21,7 @@ output "networking_private_subnets" {
 }
 
 output "networking_private_subnets_cidr_blocks" {
-  description = "List of cidr_blocks of private subnets"
+  description = "List of CIDR blocks of private subnets"
   value       = module.networking_layer.private_subnets_cidr_blocks
 }
 
@@ -36,7 +36,7 @@ output "networking_public_subnets" {
 }
 
 output "networking_public_subnets_cidr_blocks" {
-  description = "List of cidr_blocks of public subnets"
+  description = "List of CIDR blocks of public subnets"
   value       = module.networking_layer.public_subnets_cidr_blocks
 }
 
@@ -51,7 +51,7 @@ output "networking_database_subnets" {
 }
 
 output "networking_database_subnets_cidr_blocks" {
-  description = "List of cidr_blocks of database subnets"
+  description = "List of CIDR blocks of database subnets"
   value       = module.networking_layer.database_subnets_cidr_blocks
 }
 
@@ -81,7 +81,7 @@ output "networking_igw_id" {
 }
 
 output "networking_vgw_id" {
-  description = "The ID of the VPN Gateway"
+  description = "The ID of the VPN Gateway. Will remain empty if VPN is disabled"
   value       = module.networking_layer.vgw_id
 }
 
@@ -123,7 +123,7 @@ output "runtime_eks_cluster_platform_version" {
 }
 
 output "runtime_eks_cluster_status" {
-  description = "Status of the EKS cluster. One of `CREATING`, `ACTIVE`, `DELETING`, `FAILED`"
+  description = "Status of the EKS cluster. One of CREATING, ACTIVE, DELETING, FAILED"
   value       = module.runtime_layer.cluster_status
 }
 
@@ -180,7 +180,7 @@ output "runtime_eks_managed_node_groups_private_key_pem" {
 }
 
 output "runtime_eks_managed_node_groups_public_key_openssh" {
-  description = "The public key data used in EKS Cluster Node Groups in \"Authorized Keys\" format. This is populated only if the configured private key is supported: this includes all `RSA` and `ED25519` keys"
+  description = "The public key data used in EKS Cluster Node Groups in \"Authorized Keys\" format. This is populated only if the configured private key is supported: this includes all RSA and ED25519 keys"
   value       = module.runtime_layer.public_key_openssh
 }
 
@@ -210,7 +210,7 @@ output "runtime_bastion_key_name" {
 }
 
 output "runtime_bastion_public_key_openssh" {
-  description = "The public key data used in Bastion Server in \"Authorized Keys\" format. This is populated only if the configured private key is supported: this includes all `RSA` and `ED25519` keys"
+  description = "The public key data used in Bastion Server in \"Authorized Keys\" format. This is populated only if the configured private key is supported: this includes all RSA and ED25519 keys"
   value       = module.runtime_layer.bastion_public_key_openssh
 }
 
@@ -368,7 +368,7 @@ output "storage_replica_db_instance_username" {
   sensitive   = true
 }
 
-output "replica_master_db_instance_password" {
+output "storage_replica_db_instance_password" {
   description = "The database password of the replica RDS instance (this password may be old, because Terraform doesn't track it after initial creation)"
   value       = module.storage_layer.master_db_instance_password
   sensitive   = true
@@ -382,7 +382,7 @@ output "storage_replica_db_instance_port" {
 # Traffic
 
 output "traffic_api_endpoint" {
-  description = "The URI of the API"
+  description = "The URI of the API Gateway"
   value       = module.traffic_access_layer.api_endpoint
 }
 
@@ -414,11 +414,11 @@ output "frontend_root_record_name" {
 }
 
 output "frontend_root_cdn_arn" {
-  description = "The ARN (Amazon Resource Name) for the distribution."
+  description = "The ARN (Amazon Resource Name) for the root CDN"
   value       = module.frontend_layer.cloudfront_distribution_arn
 }
 
 output "frontend_root_cdn_domain_name" {
-  description = "TThe domain name corresponding to the distribution."
+  description = "The domain name corresponding to the root CDN"
   value       = module.frontend_layer.cloudfront_distribution_domain_name
 }

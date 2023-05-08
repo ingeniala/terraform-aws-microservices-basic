@@ -13,7 +13,7 @@ locals {
 
 module "ecr" {
   source       = "cloudposse/ecr/aws"
-  version      = "0.35.0"
+  version      = "~> 0.35"
 
   name                    = var.registry_name
   use_fullname            = false

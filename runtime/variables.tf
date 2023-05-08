@@ -19,7 +19,7 @@ variable "cluster_version" {
 }
 
 variable "cluster_max_size" {
-  type        = string
+  type        = number
   description = "EKS Cluster maximum amount of worker nodes"
 }
 
