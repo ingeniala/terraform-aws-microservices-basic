@@ -1,6 +1,6 @@
 # AWS Microservices Basic Architecture Terraform Module
 
-Terraform module, which creates the whole basic but needed resources to create a microservices architecture in AWS, where it is common to identify these layers:    
+Terraform module, which creates all basic but needed resources to create a microservices architecture in AWS, where it is common to identify these layers:    
 - Frontend, where the end user is able to interact and request data coming from the architecture backbone
 - Access (Traffic Gateway), which will control the incoming traffic and also expose backend functionalities in the form of HTTP APIs. 
 - Backend, in charge of holding and managing the software runtime components.
