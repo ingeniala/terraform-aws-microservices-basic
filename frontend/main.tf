@@ -129,9 +129,23 @@ module "root_website_cdn" {
     max_ttl         = 31536000
     compress        = true
     query_string    = true
+
+    function_association = {
+      # Valid keys: viewer-request, viewer-response
+      viewer-request = {
+        function_arn = aws_cloudfront_function.redirect_function.arn
+      }
+    }
   }
 
   tags = merge({Name = "${var.website_name}-root-cdn", Type = "CloudFront Distribution"}, local.tags, var.tags_root)
+}
+
+resource "aws_cloudfront_function" "redirect_function" {
+  name    = "${var.website_name}-redirect-function"
+  runtime = "cloudfront-js-1.0"
+  comment = "Redirect paths to it's .html file & manage dynamic routing"
+  code    = file("${path.module}/cdn-function.js")
 }
 
 resource "aws_route53_record" "root_website_record" {
