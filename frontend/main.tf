@@ -1,5 +1,5 @@
 locals {
-  website_domain   = "${var.website_subdomain}.${var.domain_name}"
+  website_domain   = var.website_subdomain != "" ? "${var.website_subdomain}.${var.domain_name}" : var.domain_name
 
   tags = merge({
     Module = "terraform-aws-microservices-basic"
@@ -30,7 +30,7 @@ data "aws_iam_policy_document" "root_website_bucket_policy_document" {
 
     principals {
       type        = "AWS"
-      identifiers = module.root_website_cdn.cloudfront_origin_access_identity_iam_arns
+      identifiers = ["*"]
     }
   }
 }
@@ -69,10 +69,10 @@ resource "aws_s3_bucket_ownership_controls" "root_website_bucket_ownership" {
 resource "aws_s3_bucket_public_access_block" "root_website_bucket_access" {
   bucket = aws_s3_bucket.root_website_bucket.id
 
-  block_public_acls       = true
-  block_public_policy     = true
- # ignore_public_acls      = false
- # restrict_public_buckets = false
+  block_public_acls       = false
+  block_public_policy     = false
+  ignore_public_acls      = false
+  restrict_public_buckets = false
 }
 
 resource "aws_s3_bucket_acl" "root_website_bucket_acl" {
@@ -82,7 +82,7 @@ resource "aws_s3_bucket_acl" "root_website_bucket_acl" {
   ]
 
   bucket = aws_s3_bucket.root_website_bucket.id
-  acl    = "private"
+  acl    = "public-read"
 }
 
 # Root CDN
@@ -98,25 +98,19 @@ module "root_website_cdn" {
   wait_for_deployment = false
   default_root_object = "index.html"
 
-  create_origin_access_identity = true
-  origin_access_identities = {
-    s3_website = "CloudFront access to S3"
-  }
+  create_origin_access_identity = false
 
   origin = {
     s3_website = {
-      domain_name = aws_s3_bucket.root_website_bucket.bucket_regional_domain_name
-      s3_origin_config = {
-        origin_access_identity = "s3_website"
+      domain_name = aws_s3_bucket_website_configuration.root_website_bucket_config.website_endpoint
+      custom_origin_config = {
+        http_port              = 80
+        https_port             = 443
+        origin_protocol_policy = "http-only"
+        origin_ssl_protocols   = ["TLSv1", "TLSv1.1", "TLSv1.2"]
       }
     }
   }
-
-  # custom_error_response = [{
-  #   error_code         = 404
-  #   response_code      = 200
-  #   response_page_path = "/index.html"
-  # }]
 
   viewer_certificate = {
     acm_certificate_arn      = var.acm_certificate_arn
@@ -242,12 +236,6 @@ module "www_website_cdn" {
       }
     }
   }
-
-  # custom_error_response = [{
-  #   error_code         = 404
-  #   response_code      = 200
-  #   response_page_path = "/index.html"
-  # }]
 
   viewer_certificate = {
     acm_certificate_arn      = var.acm_certificate_arn

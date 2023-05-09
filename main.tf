@@ -167,9 +167,12 @@ module "traffic_access_layer" {
   
   # Utils
   acm_subjective_names = concat(var.traffic_certificate_subjective_names,
-    [
+    var.frontend_subdomain != "" ? [
       "${var.frontend_subdomain}.${var.traffic_main_domain_name}",
       "www.${var.frontend_subdomain}.${var.traffic_main_domain_name}"
+    ] : [
+      var.traffic_main_domain_name,
+      "www.${var.traffic_main_domain_name}"
     ])
   eks_cluster_name     = module.runtime_layer.cluster_name
 

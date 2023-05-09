@@ -151,8 +151,12 @@ module "authorizer" {
   handler       = "index.handler"
   runtime       = var.api_authorizer_runtime
 
+  vpc_subnet_ids         = var.private_subnet_ids
+  vpc_security_group_ids = [module.api_gateway_security_group.security_group_id]
+  attach_network_policy  = true
+
   publish        = true
-  lambda_at_edge = true
+  lambda_at_edge = false
 
   create_package      = false
   s3_existing_package = {

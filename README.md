@@ -61,7 +61,9 @@ Users can provide a list of repositories to create and a list of tags to preserv
 
 The storage consists of a single `database instance`, which could be a Postgres or Mysql instance.
 
-There is an option to enable replication to create a `multi-az deployment` with a primary and a replica instance.
+The deployment is `multi-az` by default so there is a silent standby replica on the other AZ in case of downtimes or disruptions with the main instance, so there is an automatic failover.
+
+There is an option to enable replication to create a read replica instance.
 
 As the cost was an important driver when creating this module, there is **no support for Aurora instances**, so these are `regular Postgres/MySQL engines` managed by AWS.
 
@@ -283,7 +285,7 @@ We are grateful to the community for contributing bugfixes and improvements! Ple
 | `traffic_api_request_mappings` | Mappings applied to request parameters that the API Gateway should perform | `map(string)` | {} | no |
 | `traffic_api_response_mappings` | Mappings applied to response parameters that the API Gateway should perform | `map(string)` | {} | no |
 | `traffic_certificate_subjective_names` | List of subjective names to include in the main ACM | `list(string)` | null | yes |
-| `frontend_subdomain` | Frontend subdomain to configure in Route53 and CDN distribution | `string` | null | yes |
+| `frontend_subdomain` | Frontend subdomain to configure in Route53 and CDN distribution | `string` | "" | no |
 
 ## Outputs
 

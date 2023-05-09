@@ -52,7 +52,11 @@ variable "eks_cluster_auth_map_roles" {
     username = string
     groups   = list(string)
   }))
-  default = [{}]
+  default = [{
+    rolearn  = ""
+    username = ""
+    groups   = []
+  }]
 }
 
 variable "eks_cluster_auth_map_users" {
@@ -62,7 +66,11 @@ variable "eks_cluster_auth_map_users" {
     username = string
     groups   = list(string)
   }))
-  default = [{}]
+  default = [{
+    userarn  = ""
+    username = ""
+    groups   = []
+  }]
 }
 
 variable "eks_cluster_auth_map_accounts" {
@@ -72,7 +80,11 @@ variable "eks_cluster_auth_map_accounts" {
     username = string
     groups   = list(string)
   }))
-  default = [{}]
+  default = [{
+    userarn  = ""
+    username = ""
+    groups   = []    
+  }]
 }
 
 variable "eks_cluster_node_group_instance_types" {
@@ -294,4 +306,5 @@ variable "traffic_certificate_subjective_names" {
 variable "frontend_subdomain" {
   description = "Frontend subdomain to configure in Route53 and CDN distribution"
   type        = string
+  default     = ""
 }
