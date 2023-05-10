@@ -176,6 +176,10 @@ module "traffic_access_layer" {
     ])
   eks_cluster_name     = module.runtime_layer.cluster_name
 
+  depends_on = [  # <= In order to wait for EKS ALB to be provisioned
+    module.runtime_layer
+  ]
+
   tags_root = local.tags
 }
 

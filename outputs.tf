@@ -189,6 +189,11 @@ output "runtime_eks_managed_node_groups_public_key_pem" {
   value       = module.runtime_layer.public_key_pem
 }
 
+output "runtime_eks_addons_base" {
+  description = "Map of attribute maps for all EKS cluster addons enabled"
+  value       = module.runtime_layer.cluster_addons
+}
+
 output "runtime_bastion_public_ip" {
   value       = module.runtime_layer.public_ip
   description = "Bastion server Public IP of the instance (or EIP)"

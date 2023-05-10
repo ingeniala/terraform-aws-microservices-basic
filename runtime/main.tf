@@ -343,6 +343,10 @@ module "ingress_nginx" {
 
   helm_timeout = 240
   helm_wait    = true
+
+  depends_on = [  # <= In order to wait for EKS ALB controller helm release
+    module.aws_lb_controller
+  ]
 }
 
 ################################################################################

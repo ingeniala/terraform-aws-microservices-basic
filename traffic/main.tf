@@ -212,6 +212,7 @@ resource "aws_route53_record" "apigw_record" {
 }
 
 # Get listener ARN from EKS Cluster ALB to be setup in VPC Link
+
 data "aws_lb" "eks_alb" {
   tags = {
     "elbv2.k8s.aws/cluster"    = var.eks_cluster_name,
