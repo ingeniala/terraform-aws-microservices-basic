@@ -122,6 +122,11 @@ output "cluster_addons" {
   value       = module.eks.cluster_addons
 }
 
+output "cluster_addon_created_alb" {
+  description = "ALB Hostname populated by Nginx Ingress Controller addon"
+  value       = local.lb_name 
+}
+
 ################################################################################
 # EKS Identity Provider
 ################################################################################

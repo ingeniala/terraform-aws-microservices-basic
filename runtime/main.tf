@@ -36,6 +36,8 @@ locals {
   lb_controller_name = "aws-lb-controller"
   autoscaler_name = "eks-cluster-autoscaler"
 
+  lb_name = regex("^([a-z0-9-]+)-[a-z0-9]+", data.kubernetes_service_v1.nginx.status.0.load_balancer.0.ingress.0.hostname)[0]
+
   tags = {
     Module = "terraform-aws-microservices-basic"
     Tier   = "runtime"
@@ -346,6 +348,29 @@ module "ingress_nginx" {
 
   depends_on = [  # <= In order to wait for EKS ALB controller helm release
     module.aws_lb_controller
+  ]
+}
+
+# Wait for the ALB provisioned by Nginx
+
+resource "time_sleep" "wait_nginx_deploy" {
+ 
+  create_duration = "60s"
+
+  triggers = {
+    nginx_deploy = module.ingress_nginx.helm_release_metadata[0].name
+  }
+}
+
+data "kubernetes_service_v1" "nginx" {
+
+  metadata {
+    name      = "ingress-nginx-controller"
+    namespace = "ingress"
+  }
+
+  depends_on = [
+    time_sleep.wait_nginx_deploy
   ]
 }
 

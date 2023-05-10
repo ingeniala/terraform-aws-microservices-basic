@@ -214,11 +214,7 @@ resource "aws_route53_record" "apigw_record" {
 # Get listener ARN from EKS Cluster ALB to be setup in VPC Link
 
 data "aws_lb" "eks_alb" {
-  tags = {
-    "elbv2.k8s.aws/cluster"    = var.eks_cluster_name,
-    "service.k8s.aws/resource" = "LoadBalancer",
-    "service.k8s.aws/stack"    = "ingress/ingress-nginx-controller"
-  }
+  name = var.eks_cluster_alb
 }
 
 data "aws_lb_listener" "eks_alb_http" {

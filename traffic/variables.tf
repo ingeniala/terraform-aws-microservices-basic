@@ -83,7 +83,7 @@ variable "acm_subjective_names" {
   type        = list(string)
 }
 
-variable "eks_cluster_name" {
+variable "eks_cluster_alb" {
   type        = string
-  description = "The name of the EKS cluster which exposes the ALB for centralized access"
+  description = "ALB Hostname populated by Nginx Ingress Controller addon, in order to allow APIGateway creation"
 }

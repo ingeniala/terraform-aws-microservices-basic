@@ -174,11 +174,8 @@ module "traffic_access_layer" {
       var.traffic_main_domain_name,
       "www.${var.traffic_main_domain_name}"
     ])
-  eks_cluster_name     = module.runtime_layer.cluster_name
-
-  depends_on = [  # <= In order to wait for EKS ALB to be provisioned
-    module.runtime_layer
-  ]
+  
+  eks_cluster_alb  = module.runtime_layer.cluster_addon_created_alb     
 
   tags_root = local.tags
 }
