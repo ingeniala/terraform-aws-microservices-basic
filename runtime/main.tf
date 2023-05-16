@@ -336,6 +336,9 @@ module "ingress_nginx" {
       "replicaCount": 2,
       "proxySetHeaders": {
         "X-Using-Nginx-Controller": "true"
+      },
+      "config": {
+        "use-forwarded-headers": "true"
       }
     },
     "podLabels" : {
