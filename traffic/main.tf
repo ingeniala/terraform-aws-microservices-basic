@@ -23,9 +23,10 @@ module "microservices_api_gateway" {
   api_version   = try(var.apigw_api_version, "stable")
 
   cors_configuration = {
-    allow_headers = ["content-type", "x-amz-date", "authorization", "x-api-key", "x-amz-security-token", "x-amz-user-agent"]
-    allow_methods = ["*"]
-    allow_origins = ["*"]
+    allow_headers  = ["*"]
+    expose_headers = ["*"]
+    allow_methods  = ["*"]
+    allow_origins  = ["*"]
   }
 
   # Create a Custom Domain Name to access APIs publicly
