@@ -226,6 +226,9 @@ module "cluster_autoscaler_helm" {
   helm_release_name  = local.autoscaler_name
   namespace          = "kube-system"
 
+  irsa_role_create      = true
+  irsa_role_name_prefix = "${module.eks.cluster_name}-irsa"
+
   values = yamlencode({
     "replicaCount": 2,
     "image" : {
@@ -260,6 +263,9 @@ module "aws_lb_controller" {
   helm_chart_version = "1.5.2"
   helm_release_name  = local.lb_controller_name
   namespace          = "kube-system"
+
+  irsa_role_create      = true
+  irsa_role_name_prefix = "${module.eks.cluster_name}-irsa"
 
   # Values can be fetch from: https://github.com/aws/eks-charts/blob/master/stable/aws-load-balancer-controller/values.yaml
   values = yamlencode({

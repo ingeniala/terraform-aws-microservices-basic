@@ -123,7 +123,7 @@ module "database_replica" {
 ################################################################################
 
 resource "aws_db_subnet_group" "db_subnet_group" {
-  name       = "main"
+  name       = "${local.name}-subnet-group"
   subnet_ids = var.database_subnet_ids
 
   tags = merge({
