@@ -81,6 +81,8 @@ module "eks" {
   aws_auth_users    = var.cluster_auth_map_users
   aws_auth_accounts = var.cluster_auth_map_accounts
 
+  cluster_additional_security_group_ids = [aws_security_group.internal_allow_tls.id]
+
   eks_managed_node_group_defaults = {
 
     instance_types = var.cluster_node_group_instance_types
@@ -171,7 +173,7 @@ resource "aws_security_group" "remote_ssh_access" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["${var.vpc_cidr_block}"]
+    cidr_blocks = [var.vpc_cidr_block]
   }
 
   egress {
@@ -183,6 +185,22 @@ resource "aws_security_group" "remote_ssh_access" {
   }
 
   tags = merge(local.tags, { Name = "${local.name}-remote" }, var.tags_root)
+}
+
+resource "aws_security_group" "internal_allow_tls" {
+  name_prefix = "${local.name}-vpc-allow-tls"
+  description = "Allow TLS inbound traffic from whithin VPC"
+  vpc_id      = var.vpc_id
+
+  ingress {
+    description = "TLS from within VPC"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = [var.vpc_cidr_block]
+  }
+
+  tags = merge({Name="${local.name}-vpc-allow-tls"},local.tags)
 }
 
 resource "aws_iam_policy" "node_additional" {

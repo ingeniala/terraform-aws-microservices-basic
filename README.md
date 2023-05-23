@@ -205,6 +205,7 @@ We are grateful to the community for contributing bugfixes and improvements! Ple
 | `aws_security_group.vpc_tls` | resource |
 | `aws_security_group.vpc_http` | resource |
 | `aws_security_group.eks_node_remote_ssh_access` | resource |
+| `aws_security_group.eks_node_internal_allow_tls` | resource |
 | `aws_iam_policy.eks_node_additional_policy` | resource |
 | `aws_ecrpublic_authorization_token.ecr_public_auth_token` | datasource |
 | `aws_ami.amazon_linux_2` | datasource |
