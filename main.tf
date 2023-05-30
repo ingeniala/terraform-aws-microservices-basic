@@ -82,8 +82,7 @@ module "runtime_layer" {
     # Postgresql Client
     "sudo amazon-linux-extras install postgresql14",
     # MySQL Client
-    "sudo yum install -y https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm",
-    "sudo yum install -y mysql-community-client",
+    "sudo amazon-linux-extras install mariadb10.5",
     # Install Networking Tools
     "sudo yum install -y bind-utils",
     "sudo yum install -y net-tools",

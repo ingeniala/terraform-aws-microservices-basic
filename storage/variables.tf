@@ -55,17 +55,17 @@ variable "max_allocated_storage" {
 
 variable "vpc_id" {
   type        = string
-  description = "VPC Identifier where the runtime layer will be placed"
+  description = "VPC Identifier where the storage layer will be placed"
 }
 
 variable "vpc_cidr_block" {
   type        = string
-  description = "VPC block IP range where the runtime layer will be placed"
+  description = "VPC block IP range where the storage layer will be placed"
 }
 
 variable "database_subnet_ids" {
   type        = list(string)
-  description = "VPC Database subnets Identifiers where the runtime layer will be placed"
+  description = "VPC Database subnets Identifiers where the storage layer will be placed"
 }
 
 variable "enable_cloudwatch_logging" {
