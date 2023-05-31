@@ -245,9 +245,9 @@ We are grateful to the community for contributing bugfixes and improvements! Ple
 | `vpc_enable_vpn` | Whether to enable a Virtual Private Network Gateway attached to the VPC | `bool` | false | no |
 | `eks_cluster_version` | EKS Cluster version to be set | `string` | null | yes |
 | `eks_cluster_max_size` | EKS Cluster maximum amount of worker nodes | `number` | null | yes |
-| `eks_cluster_auth_map_roles` | Additional IAM roles to add to the aws-auth configmap. | `list(object)` | [{}] | no |
-| `eks_cluster_auth_map_users` | Additional IAM users to add to the aws-auth configmap. | `list(object)` | [{}] | no |
-| `eks_cluster_auth_map_accounts` | Additional IAM accounts to add to the aws-auth configmap. | `list(object)` | [{}] | no |
+| `eks_cluster_auth_map_roles` | Additional IAM roles to add to the aws-auth configmap. | `list(any)` | [] | no |
+| `eks_cluster_auth_map_users` | Additional IAM users to add to the aws-auth configmap. | `list(any)` | [] | no |
+| `eks_cluster_auth_map_accounts` | Additional IAM accounts to add to the aws-auth configmap. | `list(any)` | [] | no |
 | `eks_cluster_node_group_instance_types` | EKS Cluster Main Node group instance types | `list(string)` | null | yes |
 | `eks_cluster_node_group_ami` | EKS Cluster Main Node group AMI machine | `string` | BOTTLEROCKET_x86_64 | no |
 | `eks_cluster_node_group_platform` | EKS Cluster Main Node group platform | `string` | bottlerocket | no |

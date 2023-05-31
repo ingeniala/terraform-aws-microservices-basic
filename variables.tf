@@ -47,44 +47,20 @@ variable "eks_cluster_max_size" {
 
 variable "eks_cluster_auth_map_roles" {
   description = "Additional IAM roles to add to the aws-auth configmap."
-  type = list(object({
-    rolearn  = string
-    username = string
-    groups   = list(string)
-  }))
-  default = [{
-    rolearn  = ""
-    username = ""
-    groups   = []
-  }]
+  type = list(any)
+  default = []
 }
 
 variable "eks_cluster_auth_map_users" {
   description = "Additional IAM users to add to the aws-auth configmap."
-  type = list(object({
-    userarn  = string
-    username = string
-    groups   = list(string)
-  }))
-  default = [{
-    userarn  = ""
-    username = ""
-    groups   = []
-  }]
+  type = list(any)
+  default = []
 }
 
 variable "eks_cluster_auth_map_accounts" {
   description = "Additional IAM accounts to add to the aws-auth configmap."
-  type = list(object({
-    userarn  = string
-    username = string
-    groups   = list(string)
-  }))
-  default = [{
-    userarn  = ""
-    username = ""
-    groups   = []    
-  }]
+  type = list(any)
+  default = []
 }
 
 variable "eks_cluster_node_group_instance_types" {
