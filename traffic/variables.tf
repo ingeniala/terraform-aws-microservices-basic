@@ -87,3 +87,23 @@ variable "eks_cluster_alb" {
   type        = string
   description = "ALB Hostname populated by Nginx Ingress Controller addon, in order to allow APIGateway creation"
 }
+
+variable "waf_name" {
+  description = "Name to assign to Web Application Firewall ACL"
+  type        = string
+}
+
+variable "waf_enabled" {
+  description = "Whether to configure Web Application Firewall ACL"
+  type        = bool
+}
+
+variable "waf_allow_global" {
+  description = "Whether to allow global traffic in Web Application Firewall ACL. If false, then only provided country-based traffic is allowed"
+  type        = bool
+}
+
+variable "waf_allowed_countries" {
+  description = "Provided country list from where traffic should be allowed in Web Application Firewall ACL"
+  type        = list(string)
+}

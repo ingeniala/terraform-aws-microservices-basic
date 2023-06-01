@@ -26,3 +26,15 @@ output "apigw_route53_record_name" {
   description = "Route53 record created for accessing API Gateway Custom Domain Name"
   value       = aws_route53_record.apigw_record.name
 }
+
+# Web Application Firewall
+
+output "waf_id" {
+  description = "The ID of the WAF WebACL"
+  value       = module.waf.id
+}
+
+output "waf_arn" {
+  description = "The ARN of the WAF WebACL"
+  value       = module.waf.arn
+}

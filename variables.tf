@@ -279,6 +279,30 @@ variable "traffic_certificate_subjective_names" {
   type        = list(string)
 }
 
+variable "traffic_waf_name" {
+  description = "Name to assign to Web Application Firewall ACL"
+  type        = string
+  default     = "traffic-waf"
+}
+
+variable "traffic_waf_enabled" {
+  description = "Whether to configure Web Application Firewall ACL"
+  type        = bool
+  default     = false
+}
+
+variable "traffic_waf_allow_global" {
+  description = "Whether to allow global traffic in Web Application Firewall ACL. If false, then only provided country-based traffic is allowed"
+  type        = bool
+  default     = true
+}
+
+variable "traffic_waf_allowed_countries" {
+  description = "Provided country list from where traffic should be allowed in Web Application Firewall ACL"
+  type        = list(string)
+  default     = []
+}
+
 variable "frontend_subdomain" {
   description = "Frontend subdomain to configure in Route53 and CDN distribution"
   type        = string

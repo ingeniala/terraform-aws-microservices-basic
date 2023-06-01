@@ -178,6 +178,78 @@ module "authorizer" {
                 local.tags, var.tags_root)
 }
 
+###################################################
+# Web Application Firewall
+###################################################
+module "waf" {
+  source  = "cloudposse/waf/aws"
+  version = "0.3.0"
+
+  enabled = var.waf_enabled
+  name    = var.waf_name
+
+  scope = "CLOUDFRONT"
+ 
+  geo_match_statement_rules = var.waf_allow_global ? [] : [
+    {
+      name     = "allow-geo"
+      action   = "allow"
+      priority = 10
+
+      statement = {
+        country_codes = var.waf_allowed_countries
+      }
+
+      visibility_config = {
+        cloudwatch_metrics_enabled = true
+        sampled_requests_enabled   = false
+        metric_name                = "allow-geo-metric"
+      }
+    }
+  ]
+
+  managed_rule_group_statement_rules = [
+    {
+      name      = "common"
+      priority  = 20
+
+      statement = {
+        name        = "AWSManagedRulesCommonRuleSet"
+        vendor_name = "AWS"
+      }
+
+      visibility_config = {
+        cloudwatch_metrics_enabled = true
+        sampled_requests_enabled   = false
+        metric_name                = "common-rules-metric"
+      }
+    }
+  ]
+
+  rate_based_statement_rules = [
+    {
+      name     = "block-ip"
+      action   = "block"
+      priority = 30
+
+      statement = {
+        limit              = 100
+        aggregate_key_type = "IP"
+      }
+
+      visibility_config = {
+        cloudwatch_metrics_enabled = true
+        sampled_requests_enabled   = false
+        metric_name                = "block-ip-metric"
+      }
+    }
+  ]
+
+  tags = merge({Name = "Frontend Shield", Type = "Amazon Web Application Firewall"}, 
+            local.tags, var.tags_root)
+
+}
+
 ################################################################################
 # Supporting Resources
 ################################################################################

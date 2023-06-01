@@ -174,7 +174,13 @@ module "traffic_access_layer" {
       "www.${var.traffic_main_domain_name}"
     ])
   
-  eks_cluster_alb  = module.runtime_layer.cluster_addon_created_alb     
+  eks_cluster_alb  = module.runtime_layer.cluster_addon_created_alb 
+
+  # WAF
+  waf_enabled      = var.traffic_waf_enabled
+  waf_name         = var.traffic_waf_name
+  waf_allow_global = var.traffic_waf_allow_global
+  waf_allowed_countries = var.traffic_waf_allowed_countries
 
   tags_root = local.tags
 }
@@ -190,6 +196,9 @@ module "frontend_layer" {
   
   # Utils
   acm_certificate_arn = module.traffic_access_layer.main_acm_certificate_arn
+
+  # WAF (if enabled)
+  waf_arn = var.traffic_waf_enabled ? module.traffic_access_layer.waf_arn : ""
 
   tags_root = local.tags
 }

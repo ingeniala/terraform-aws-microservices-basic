@@ -23,3 +23,7 @@ variable "acm_certificate_arn" {
   type        = string
 }
 
+variable "waf_arn" {
+  description = "The ARN of the WAF WebACL"
+}
+

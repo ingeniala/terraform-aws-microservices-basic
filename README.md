@@ -193,6 +193,7 @@ We are grateful to the community for contributing bugfixes and improvements! Ple
 | `traffic_api_gateway` | [terraform-aws-modules/apigateway-v2/aws](https://registry.terraform.io/modules/terraform-aws-modules/apigateway-v2/aws/latest) | ~> 2.2 |
 | `traffic_api_gateway_security_group` | [terraform-aws-modules/security-group/aws](https://registry.terraform.io/modules/terraform-aws-modules/security-group/aws/latest) | ~> 4.0 |
 | `traffic_lambda_authorizer` | [terraform-aws-modules/lambda/aws](https://registry.terraform.io/modules/terraform-aws-modules/lambda/aws/latest) | ~> 4.16 |
+| `traffic_waf` | [cloudposse/waf/aws](https://github.com/cloudposse/terraform-aws-waf) | 0.3.0 |
 | `traffic_main_certificate` | [terraform-aws-modules/acm/aws](https://registry.terraform.io/modules/terraform-aws-modules/acm/aws/latest) | ~> 4.3 |
 | `frontend_root_cdn` | [terraform-aws-modules/cloudfront/aws](https://registry.terraform.io/modules/terraform-aws-modules/cloudfront/aws/latest) | ~> 3.2 |
 | `frontend_www_cdn` | [terraform-aws-modules/cloudfront/aws](https://registry.terraform.io/modules/terraform-aws-modules/cloudfront/aws/latest) | ~> 3.2 |
@@ -286,6 +287,10 @@ We are grateful to the community for contributing bugfixes and improvements! Ple
 | `traffic_api_request_mappings` | Mappings applied to request parameters that the API Gateway should perform | `map(string)` | {} | no |
 | `traffic_api_response_mappings` | Mappings applied to response parameters that the API Gateway should perform | `map(string)` | {} | no |
 | `traffic_certificate_subjective_names` | List of subjective names to include in the main ACM | `list(string)` | null | yes |
+| `traffic_waf_name` | Name to assign to Web Application Firewall ACL | `string` | traffic-waf | no |
+| `traffic_waf_enabled` | Whether to configure Web Application Firewall ACL | `bool` | false | no |
+| `traffic_waf_allow_global` | Whether to allow global traffic in Web Application Firewall ACL. If false, then only provided country-based traffic is allowed | `bool` | true | no |
+| `traffic_waf_allowed_countries` | Provided country list from where traffic should be allowed in Web Application Firewall ACL | `list(string)` | [] | no |
 | `frontend_subdomain` | Frontend subdomain to configure in Route53 and CDN distribution | `string` | "" | no |
 
 ## Outputs

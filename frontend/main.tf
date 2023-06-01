@@ -148,6 +148,9 @@ module "root_website_cdn" {
     response_page_path = "/index.html"
   }]
 
+  # Add WAF to filter suspicious requests
+  web_acl_id = var.waf_arn
+
   tags = merge({Name = "${var.website_name}-root-cdn", Type = "CloudFront Distribution"}, local.tags, var.tags_root)
 }
 
@@ -279,6 +282,9 @@ module "www_website_cdn" {
     compress        = true
     query_string    = true
   }
+
+  # Add WAF to filter suspicious requests
+  web_acl_id = var.waf_arn
 
   tags = merge({Name = "${var.website_name}-cdn", Type = "CloudFront Distribution"}, local.tags, var.tags_root)
 }
