@@ -61,12 +61,12 @@ module "microservices_api_gateway" {
     }
   } : {}
 
-  # Specify a common global integration with the defined Authorizer
+  # Specify a generic integration with the defined Authorizer
   integrations = var.create_api_lambda_authorizer ? {
 
-    "ANY /{proxy+}" = {
+    "$default" = {
       description            = "Default route integration with authentication"
-      operation_name         = "ANY authenticated operation"
+      operation_name         = "Default authenticated operation"
       connection_type        = "VPC_LINK"
       vpc_link               = "alb-link"
       integration_type       = "HTTP_PROXY"
@@ -79,13 +79,13 @@ module "microservices_api_gateway" {
       response_parameters    = jsonencode([{status_code = 200, mappings = var.api_response_mappings}])
     }
 
-    "$default" = {
+    "OPTIONS /{proxy+}" = {
       description            = "Default unauthenticated route integration"
-      operation_name         = "Default unauthenticated operation"
+      operation_name         = "Default unauthenticated operation for preflight"
       connection_type        = "VPC_LINK"
       vpc_link               = "alb-link"
       integration_type       = "HTTP_PROXY"
-      integration_method     = "ANY"
+      integration_method     = "OPTIONS"
       integration_uri        = data.aws_lb_listener.eks_alb_http.arn
       payload_format_version = "1.0"
       response_parameters    = jsonencode([
@@ -189,6 +189,8 @@ module "waf" {
   name    = var.waf_name
 
   scope = "CLOUDFRONT"
+
+  default_action = "allow"
  
   geo_match_statement_rules = var.waf_allow_global ? [] : [
     {
