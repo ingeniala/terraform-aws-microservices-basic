@@ -55,7 +55,7 @@ module "microservices_api_gateway" {
       authorizer_type                   = "REQUEST"
       authorizer_uri                    = module.authorizer.lambda_function_invoke_arn
       authorizer_payload_format_version = "1.0"
-      authorizer_result_ttl_in_seconds  = 1800 #<= Caching TTL (30 min)
+      authorizer_result_ttl_in_seconds  = 0 #<= Caching TTL
       identity_sources                  = "$request.header.Authorization"
       enable_simple_responses           = false
     }
