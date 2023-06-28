@@ -62,7 +62,7 @@ module "microservices_api_gateway" {
   } : {}
 
   # Specify a generic integration with the defined Authorizer
-  integrations = var.create_api_lambda_authorizer ? {
+  integrations = var.create_api_lambda_authorizer ? merge({
 
     "$default" = {
       description            = "Default route integration with authentication"
@@ -98,7 +98,8 @@ module "microservices_api_gateway" {
         }
       ])
     }
-  } : {  # <= No need to create authenticated integration when no authorizer is set
+
+  },var.api_extra_routes) : {  # <= No need to create authenticated integration when no authorizer is set
     "$default" = {
       description            = "Default unauthenticated route integration"
       operation_name         = "Default unauthenticated operation"
@@ -147,7 +148,7 @@ module "authorizer" {
 
   create = var.create_api_lambda_authorizer
 
-  function_name = "${local.apigw_name}-lambda-authorizer"
+  function_name = "${local.apigw_name}-jwt-lambda-authorizer"
   description   = "Lambda function which performs a validation to authenticate and authorize requests to ${local.apigw_name}"
   handler       = "index.handler"
   runtime       = var.api_authorizer_runtime

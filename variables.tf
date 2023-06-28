@@ -274,6 +274,12 @@ variable "traffic_api_response_mappings" {
   default     = {}
 }
 
+variable "traffic_api_extra_routes" {
+  type        = map(any)
+  description = "Map of API gateway extra routes with integrations"
+  default     = {}
+}
+
 variable "traffic_certificate_subjective_names" {
   description = "List of subjective names to include in the main ACM"
   type        = list(string)

@@ -391,6 +391,11 @@ output "traffic_api_endpoint" {
   value       = module.traffic_access_layer.api_endpoint
 }
 
+output "traffic_api_execution_arn" {
+  description = "The ARN prefix to be used in an aws_lambda_permission's source_arn attribute or in an aws_iam_policy to authorize access to the @connections API"
+  value       = module.traffic_access_layer.api_execution_arn
+}
+
 output "traffic_vpc_link_id" {
   description = "ID of the API Gateway VPC Link"
   value       = module.traffic_access_layer.vpc_link_id
@@ -409,6 +414,21 @@ output "traffic_main_certificate_arn" {
 output "traffic_apigw_record_name" {
   description = "Route53 record created for accessing API Gateway Custom Domain Name"
   value       = module.traffic_access_layer.apigw_route53_record_name
+}
+
+output "traffic_apigw_security_group_id" {
+  description = "The ID of the API Security Group created to handle traffic"
+  value       = module.traffic_access_layer.apigw_security_group_id
+}
+
+output "traffic_alb_dns" {
+  description = "The DNS of the Application Load Balancer behind the API Gateway"
+  value       = module.traffic_access_layer.alb_dns
+}
+
+output "traffic_alb_zone_id" {
+  description = "The Zone ID of the Application Load Balancer behind the API Gateway"
+  value       = module.traffic_access_layer.alb_zone_id
 }
 
 # Frontend

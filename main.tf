@@ -159,6 +159,7 @@ module "traffic_access_layer" {
   api_authorizer_env_vars      = var.traffic_api_authorizer_env_vars
   api_request_mappings         = var.traffic_api_request_mappings
   api_response_mappings        = var.traffic_api_response_mappings
+  api_extra_routes             = var.traffic_api_extra_routes 
 
   # Route53 & ACM
   domain_name          = var.traffic_main_domain_name

@@ -78,6 +78,11 @@ variable "api_response_mappings" {
   description = "Mappings applied to response parameters that the API Gateway should perform"
 }
 
+variable "api_extra_routes" {
+  type        = map(any)
+  description = "Map of API gateway extra routes with integrations"
+}
+
 variable "acm_subjective_names" {
   description = "List of subjective names to include in the main ACM"
   type        = list(string)

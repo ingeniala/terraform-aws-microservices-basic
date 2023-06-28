@@ -286,6 +286,7 @@ We are grateful to the community for contributing bugfixes and improvements! Ple
 | `traffic_api_authorizer_env_vars` | Lambda authorizer environment variables to be defined | `map(string)` | {} | no |
 | `traffic_api_request_mappings` | Mappings applied to request parameters that the API Gateway should perform | `map(string)` | {} | no |
 | `traffic_api_response_mappings` | Mappings applied to response parameters that the API Gateway should perform | `map(string)` | {} | no |
+| `traffic_api_extra_routes` | Map of API gateway extra routes with integrations | `map(any)` | {} | no |
 | `traffic_certificate_subjective_names` | List of subjective names to include in the main ACM | `list(string)` | null | yes |
 | `traffic_waf_name` | Name to assign to Web Application Firewall ACL | `string` | traffic-waf | no |
 | `traffic_waf_enabled` | Whether to configure Web Application Firewall ACL | `bool` | false | no |
@@ -371,11 +372,15 @@ We are grateful to the community for contributing bugfixes and improvements! Ple
 | `storage_replica_db_instance_password` | The database password of the replica RDS instance (this password may be old, because Terraform doesn't track it after initial creation) |
 | `storage_replica_db_instance_port` | The database port of the replica RDS instance |
 | `traffic_api_endpoint` | The URI of the API Gateway |
+| `traffic_api_execution_arn` | The ARN prefix to be used in an aws_lambda_permission's source_arn attribute or in an aws_iam_policy to authorize access to the @connections API |
 | `traffic_vpc_link_id` | ID of the API Gateway VPC Link |
 | `traffic_vpc_link_arn` | ARN of the API Gateway VPC Link |
 | `traffic_main_certificate_arn` | The ARN of the main certificate |
 | `traffic_apigw_record_name` | Route53 record created for accessing API Gateway Custom Domain Name |
 | `frontend_root_record_name` | Route53 record created for accessing website |
+| `traffic_apigw_security_group_id` | The ID of the API Security Group created to handle traffic |
+| `traffic_alb_dns` | The DNS of the Application Load Balancer behind the API Gateway |
+| `traffic_alb_zone_id` | The Zone ID of the Application Load Balancer behind the API Gateway |
 | `frontend_root_cdn_arn` | The ARN (Amazon Resource Name) for the root CDN |
 | `frontend_root_cdn_domain_name` | The domain name corresponding to the root CDN |
 
