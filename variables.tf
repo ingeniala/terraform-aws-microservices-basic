@@ -192,6 +192,7 @@ variable "database_replication_enabled" {
 variable "database_instance_type" {
   description = "Instace type to use for the database"
   type        = string
+  default     = "db.t3.micro"
 }
 
 variable "database_allocated_storage" {
