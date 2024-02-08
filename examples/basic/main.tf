@@ -31,7 +31,7 @@ module "microservices_architecture_basic" {
     aws_profile = local.aws_profile
 
     #Networking
-    vpc_cidr_block             = "10.1.0.0/20"
+    vpc_cidr_block             = "10.1.0.0/16"
     vpc_subnet_extra_mask_bits = 4
 
     #Runtime - EKS Control Plane
