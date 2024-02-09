@@ -1,6 +1,7 @@
 variable "tags_root" {
-  type        = map
   description = "Tags to apply to global resources"
+  type        = map
+  default     = {}
 }
 
 variable "vpc_cidr_block" {
@@ -19,6 +20,12 @@ variable "subnet_extra_mask_bits" {
   description = "Extra mask bits amount for performing subnetting"
   type        = number
   default     = 8
+}
+
+variable db_subnet_groups {
+  description = "List of DB subnet groups to be created"
+  type = list
+  default = ["POC-Ingenia-DB-Subnet-Group-1", "POC-Ingenia-DB-Subnet-Group-2"]
 }
 
 variable "enable_vpn" {

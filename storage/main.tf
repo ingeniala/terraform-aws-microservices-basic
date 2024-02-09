@@ -85,7 +85,7 @@ module "database_replica" {
 
   # Source database. For cross-region use db_instance_arn
   replicate_source_db  = module.database_master.db_instance_id
- 
+
   engine               = local.engine
   engine_version       = local.version
   family               = local.family
@@ -121,11 +121,23 @@ module "database_replica" {
 ################################################################################
 # Supporting Resources
 ################################################################################
+data "db_subnet_group" "db_subnet_group" {
+  name = vpc.db_subnet_group_name
+
+  filter {
+    name   = "name"
+    values = [var.db_subnet_group_name]
+  }
+  
+}
 
 resource "aws_db_subnet_group" "db_subnet_group" {
-  name       = "${local.name}-sg"
-  subnet_ids = var.database_subnet_ids
- 
+  description = "Database subnet group for ${local.name}"
+  type        = "SubnetGroup"
+  default     = true
+  name        = var.db_subnet_group_name != "" ? var.db_subnet_group_name : "${local.name}-sg"
+  subnet_ids  = var.database_subnet_ids
+
   tags = merge({
     Name = "${local.name} subnet group"
   }, local.tags, var.tags_root)

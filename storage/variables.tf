@@ -78,7 +78,7 @@ variable "vpc_cidr_block" {
 variable "database_subnet_ids" {
   description = "VPC Database subnets Identifiers where the storage layer will be placed"
   type        = list(string)
-  default     = []
+  default     = [""]
 }
 
 variable "enable_cloudwatch_logging" {

@@ -16,6 +16,10 @@ terraform {
       source  = "hashicorp/random"
       version = ">= 3.5"
     }
+    storage = {
+      source  = "hashicorp/storage"
+      version = ">= 4.0"
+    }
   }
 }
 
