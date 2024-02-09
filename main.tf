@@ -20,6 +20,14 @@ terraform {
       source  = "hashicorp/dbs"
       version = ">= 4.0"
     }
+    terraform = {
+      source  = "hashicorp/terraform"
+      version = ">= 2.0"
+    }
+  }
+  module {
+    source = "https://github.com/terraform-aws-modules/terraform-aws-rds" 
+    version = ">= 5.0.0"
   }
 }
 
