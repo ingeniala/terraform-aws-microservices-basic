@@ -24,10 +24,30 @@ terraform {
       source  = "hashicorp/terraform"
       version = ">= 2.0"
     }
-  }
-  module {
-    source = "https://github.com/terraform-aws-modules/terraform-aws-rds" 
-    version = ">= 5.0.0"
+    tls = {
+      source  = "hashicorp/tls"
+      version = ">= 4.0"
+    }
+    local = {
+      source  = "hashicorp/local"
+      version = ">= 2.0"
+    }
+    null = {
+      source  = "hashicorp/null"
+      version = ">= 3.0"
+    }
+    time = {
+      source  = "hashicorp/time"
+      version = ">= 0.9"
+    }
+    rds = {
+      source  = "hashicorp/rds"
+      version = ">= 2.0"
+    }
+    database = {
+      source  = "hashicorp/database"
+      version = ">= 2.0"
+    }
   }
 }
 
