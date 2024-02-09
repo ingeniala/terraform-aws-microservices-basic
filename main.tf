@@ -170,7 +170,7 @@ module "storage_layer" {
   tags_root = local.tags
 }
 
-# Traffic Access (WAF, ApiGateway VPC Link)
+# Traffic Access (WAF, ApiGateway VPC Link) 
 
 module "traffic_access_layer" {
   source = "./traffic"
