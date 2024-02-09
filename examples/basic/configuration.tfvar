@@ -341,5 +341,5 @@ variable "traffic_waf_allowed_countries" {
 variable "frontend_subdomain" {
   description = "Frontend subdomain to configure in Route53 and CDN distribution"
   type        = string
-  default     = ""
+  default     = "front-dev"
 }
