@@ -291,8 +291,18 @@ module "www_website_cdn" {
 
 # Create Route53 records to access Website
 data "aws_route53_zone" "main" {
-  name         = var.domain_name
-  private_zone = false
+  name          = var.domain_name
+  private_zone  = false
+  provider      = aws
+  depends_on    = [module.www_website_cdn]
+}
+
+resource "aws_route53_record" "root_redirect_website_record" {
+  zone_id = data.aws_route53_zone.main.zone_id
+  name    = "www"
+  type    = "CNAME"
+  ttl     = "300"
+  records = ["${local.website_domain}"]
 }
 
 resource "aws_route53_record" "www_website_record" {

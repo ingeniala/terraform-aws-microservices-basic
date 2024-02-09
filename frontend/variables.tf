@@ -1,6 +1,7 @@
 variable "tags_root" {
-  type        = map
   description = "Tags to apply to global resources"
+  type        = map
+  default     = {}
 }
 
 variable "domain_name" {
@@ -24,11 +25,12 @@ variable "website_subdomain" {
 variable "acm_certificate_arn" {
   description = "ACM Certificate to plug into CDN distributions for the static website"
   type        = string
+  default     = ""
 }
 
 variable "waf_arn" {
   description = "The ARN of the WAF WebACL"
   type        = string
-
+  default     = ""
 }
 
