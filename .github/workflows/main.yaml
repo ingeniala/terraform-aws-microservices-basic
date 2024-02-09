@@ -20,10 +20,9 @@ jobs:
   #       run: terraform init -reconfigure -upgrade
   #     - name: Terraform Validate
   #       run: terraform validate
-
   plan:
     runs-on: ubuntu-latest
-    needs: validate
+#    needs: validate
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
