@@ -36,14 +36,6 @@ terraform {
       source  = "hashicorp/utils"
       version = ">= 3.0"
     }
-    frontend_layer = {
-      source  = "./modules/frontend"
-      version = ">= 0.0.1"
-    }
-    database = {
-      source  = "./modules/database"
-      version = ">= 0.0.1"
-    }
   }
 }
 
