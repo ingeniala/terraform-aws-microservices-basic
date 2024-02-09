@@ -32,6 +32,10 @@ terraform {
       source  = "hashicorp/time"
       version = ">= 0.9"
     }
+    utils = {
+      source  = "hashicorp/utils"
+      version = ">= 3.0"
+    }
   }
 }
 
