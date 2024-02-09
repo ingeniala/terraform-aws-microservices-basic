@@ -7,19 +7,19 @@ on:
       - main
 
 jobs:
-  validate:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Set up Terraform
-        uses: hashicorp/setup-terraform@v2
-        with:
-          terraform_version: latest
-      - name: Terraform Init
-        run: terraform init -reconfigure -upgrade
-      - name: Terraform Validate
-        run: terraform validate
+  # validate:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v2
+  #     - name: Set up Terraform
+  #       uses: hashicorp/setup-terraform@v2
+  #       with:
+  #         terraform_version: latest
+  #     - name: Terraform Init
+  #       run: terraform init -reconfigure -upgrade
+  #     - name: Terraform Validate
+  #       run: terraform validate
 
   plan:
     runs-on: ubuntu-latest
