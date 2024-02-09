@@ -33,8 +33,8 @@ terraform {
       version = ">= 0.9"
     }
     utils = {
-      source  = "hashicorp/utils"
-      version = ">= 3.0"
+      source  = "cloudposse/utils"
+      version = ">= 1.15.0"
     }
   }
 }
