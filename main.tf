@@ -16,14 +16,6 @@ terraform {
       source  = "hashicorp/random"
       version = ">= 3.6"
     }
-    storage = {
-      source  = "hashicorp/dbs"
-      version = ">= 4.0"
-    }
-    terraform = {
-      source  = "hashicorp/terraform"
-      version = ">= 2.0"
-    }
     tls = {
       source  = "hashicorp/tls"
       version = ">= 4.0"
@@ -39,14 +31,6 @@ terraform {
     time = {
       source  = "hashicorp/time"
       version = ">= 0.9"
-    }
-    rds = {
-      source  = "hashicorp/rds"
-      version = ">= 2.0"
-    }
-    database = {
-      source  = "hashicorp/database"
-      version = ">= 2.0"
     }
   }
 }
