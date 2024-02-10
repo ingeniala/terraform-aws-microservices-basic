@@ -1,40 +1,65 @@
+##############################################################################
+## Main
+## Author: @ingeniala
+## Date: 2022-11-01
+## Description: Terraform automation to create AWS resources,
+##              using the AWS Terraform Provider
+##              https://registry.terraform.io/providers/hashicorp/aws
+##              https://github.com/ingeniala/terraform-aws-microservices-basic
+##              https://github.com/cloudposse/terraform-aws-ecr
+##              
+## Modified: 2024-02/09
+## By : andres@ingenia.la
+## Description: Refactored code and added automated CICD pipeline 
+## witch will deploy the infrastructure using Terraform just by 
+## pushing to github
+##  
+##############################################################################
 terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 4.67"
+      version = "~> 4.0"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = ">= 2.25.2"
+      version = ">= 1.11.1"
     }
     helm = {
       source  = "hashicorp/helm"
-      version = ">= 2.12.0"
+      version = ">= 2.0.1"
     }
     random = {
       source  = "hashicorp/random"
-      version = ">= 3.6"
+      version = ">= 2.3.0"
     }
     tls = {
       source  = "hashicorp/tls"
-      version = ">= 4.0"
+      version = ">= 3.0"
     }
     local = {
       source  = "hashicorp/local"
-      version = ">= 2.0"
+      version = ">= 1.2"
     }
     null = {
       source  = "hashicorp/null"
-      version = ">= 3.0"
+      version = ">= 0.2"
     }
     time = {
       source  = "hashicorp/time"
-      version = ">= 0.9"
+      version = ">= 0.7.2"
     }
     utils = {
       source  = "cloudposse/utils"
-      version = ">= 1.15.0"
+      version = ">= 0.20.1"
+    }
+    cloudinit = {
+      source  = "hashicorp/cloudinit"
+      version = ">= 0.2"
+    }
+    external = {
+      source  = "hashicorp/external"
+      version = ">= 0.2"
     }
   }
 }
@@ -57,6 +82,14 @@ module "networking_layer" {
   subnet_extra_mask_bits = var.vpc_subnet_extra_mask_bits
   enable_vpn             = var.vpc_enable_vpn
   tags_root              = local.tags
+}
+
+module "terraform-aws-modules" {
+  source = "terraform-aws-modules/terraform-aws-rds"
+  terraform-aws-rds = {
+    version = "4.0.0"
+  }
+  
 }
 
 # Runtime Layer (EKS, EC2)

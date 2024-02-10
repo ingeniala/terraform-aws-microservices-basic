@@ -2,13 +2,13 @@
 data "aws_availability_zones" "available" {}
 
 locals {
-  name    = var.db_name
-  engine  = var.engine
-  version = var.engine_version
-
+  name                  = var.db_name
+  engine                = var.engine
+  version               = var.engine_version
   family                = join("",[var.engine,var.engine_version])  # DB parameter group
   major_engine_version  = var.engine_version                        # DB option group
-  instance_class        = var.instance_type
+  aws_db_instance_class = var.instance_type
+#  instance_class        = var.instance_type
   allocated_storage     = var.allocated_storage
   max_allocated_storage = var.max_allocated_storage
   port                  = var.db_port
@@ -38,27 +38,41 @@ module "database_master" {
   engine_version       = local.version
   family               = local.family
   major_engine_version = local.major_engine_version
-  instance_class       = local.instance_class
-
+  aws_db_instance_class = local.aws_db_instance_class
+#  instance_class       = local.instance_class
   allocated_storage     = local.allocated_storage
   max_allocated_storage = local.max_allocated_storage
-
   username               = var.db_user
   create_random_password = true
   port                   = local.port
-
   multi_az               = true
   db_subnet_group_name   = aws_db_subnet_group.db_subnet_group.name
   vpc_security_group_ids = [module.security_group.security_group_id]
-  
+#  create_aws_db_parameter_group = true
   create_db_parameter_group   = true
+#  Agregados por Andres Kitaura
+#  2024-02-09
+  # create_aws_db_parameter_group.name = "${local.name}-cluster-parameter-group"
+  # create_aws_db_parameter_group.family = local.family
+  # create_aws_db_parameter_group.description = "${local.name} cluster parameter group"
+  # create_aws_db_parameter_group.parameters = [
+  #   {
+  #     name  = "character_set_client"
+  #     value = "utf8mb4"
+  #   },
+  #   {
+  #     name  = "character_set_server"
+  #     value = "utf8mb4"
+  #   }
+  # ]
+#  Agregados por Andres Kitaura
+#  2024-02-09
+
   parameter_group_name        = "${local.name}-cluster-parameter-group"
   parameter_group_description = "${local.name} cluster parameter group"
-
   backup_window      = "00:00-03:00"
   maintenance_window = "Tue:03:00-Tue:06:00"
   apply_immediately  = true
-
   create_cloudwatch_log_group     = var.enable_cloudwatch_logging
   enabled_cloudwatch_logs_exports = var.cloudwatch_logging_exports
 
@@ -67,7 +81,6 @@ module "database_master" {
   skip_final_snapshot     = true
   deletion_protection     = false
   storage_encrypted       = false
-
   tags = merge({Name = "${local.name}-master"},local.tags, var.tags_root)
 }
 
@@ -76,36 +89,36 @@ module "database_master" {
 ################################################################################
 
 module "database_replica" {
-  source  = "terraform-aws-modules/rds/aws"
-  version = "5.6.0"
-
-  identifier = "${local.name}-replica"
-  
-  create_db_instance = local.replication_enabled
-
+  source                  = "terraform-aws-modules/rds/aws"
+  version                 = "5.6.0"
+  identifier              = "${local.name}-replica"
+## Aded becuase of the hashicorp/db	issue
+  create_aws_db_instance  = local.replication_enabled
+  aws_db_instance_class   = local.aws_db_instance_class
+  aws_db_instance_name    = "${local.name}-replica"
+  aws_dbinstance_region   = data.aws_availability_zones.available.names[0]
+  # Changed the db_instance for aws_db_instance because of the problme on hashicorp/db
+  # create_db_instance      = local.replication_enabled
+  # Added aws_db_instance to avoid the bug on hashicorp/db that's not existsing
   # Source database. For cross-region use db_instance_arn
-  replicate_source_db  = module.database_master.db_instance_id
-
-  engine               = local.engine
-  engine_version       = local.version
-  family               = local.family
-  major_engine_version = local.major_engine_version
-  instance_class       = local.instance_class
-
-  allocated_storage     = local.allocated_storage
-  max_allocated_storage = local.max_allocated_storage
-
-  create_random_password = false
-  port                   = local.port
-
-  multi_az               = false
-  db_subnet_group_name   = aws_db_subnet_group.db_subnet_group.name
-  vpc_security_group_ids = [module.security_group.security_group_id]
-
-  backup_window      = "00:00-03:00"
-  maintenance_window = "Tue:03:00-Tue:06:00"
-  apply_immediately  = true
-
+  replicate_source_db     = module.database_master.db_instance_id
+  engine                  = local.engine
+  engine_version          = local.version
+  family                  = local.family
+  major_engine_version    = local.major_engine_version
+  allow_max_version_upgrade = false
+  allow_min_version_upgrade = true
+  allocated_storage       = local.allocated_storage
+  max_allocated_storage   = local.max_allocated_storage
+  create_random_password  = false
+  port                    = local.port
+  multi_az                = false
+  aws_db_subnet_group_name = aws_db_subnet_group.db_subnet_group.name
+#  db_subnet_group_name    = aws_db_subnet_group.db_subnet_group.name
+  vpc_security_group_ids  = [module.security_group.security_group_id]
+  backup_window           = "00:00-03:00"
+  maintenance_window      = "Tue:03:00-Tue:06:00"
+  apply_immediately       = true
   enabled_cloudwatch_logs_exports = var.cloudwatch_logging_exports
   create_cloudwatch_log_group     = var.enable_cloudwatch_logging
 
@@ -114,7 +127,6 @@ module "database_replica" {
   skip_final_snapshot     = true
   deletion_protection     = false
   storage_encrypted       = false
-
   tags = merge({Name = "${local.name}-replica"},local.tags, var.tags_root)
 }
 
@@ -123,12 +135,11 @@ module "database_replica" {
 ################################################################################
 data "db_subnet_group" "db_subnet_group" {
   name = vpc.db_subnet_group_name
-
+  db_subnet_group = vpc.db_subnet_group
   filter {
     name   = "name"
     values = [var.db_subnet_group_name]
   }
-  
 }
 
 resource "aws_db_subnet_group" "db_subnet_group" {
