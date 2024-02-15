@@ -1,8 +1,6 @@
 locals {
   apigw_name = var.apigw_name
-
   root_domain_name = var.domain_name
-
   tags = {
     Module = "terraform-aws-microservices-basic"
     Tier   = "traffic"

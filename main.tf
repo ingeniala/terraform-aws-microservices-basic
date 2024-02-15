@@ -41,10 +41,10 @@ terraform {
       source  = "hashicorp/local"
       version = ">= 1.2"
     }
-    null = {
-      source  = "hashicorp/null"
-      version = ">= 0.2"
-    }
+    # null = {
+    #   source  = "hashicorp/null"
+    #   version = ">= 0.2"
+    # }
     time = {
       source  = "hashicorp/time"
       version = ">= 0.7.2"
@@ -85,11 +85,11 @@ module "networking_layer" {
 }
 
 module "terraform-aws-modules" {
-  source = "terraform-aws-modules/terraform-aws-rds"
+  source  = "./hashicorp/terraform-aws-modules"
+  name    = "terraform-aws-modules"
   terraform-aws-rds = {
     version = "4.0.0"
   }
-  
 }
 
 # Runtime Layer (EKS, EC2)
