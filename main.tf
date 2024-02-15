@@ -8,30 +8,33 @@
 ##              https://github.com/ingeniala/terraform-aws-microservices-basic
 ##              https://github.com/cloudposse/terraform-aws-ecr
 ##              
-## Modified: 2024-02/09
-## By : andres@ingenia.la
+## Modified: 2024.02.09 - Andres Kitaura
 ## Description: Refactored code and added automated CICD pipeline 
 ## witch will deploy the infrastructure using Terraform just by 
 ## pushing to github
 ##  
 ##############################################################################
+## 2024.02.14 - Andres Kitaura
+## - Added CICD by Andres Kitaura
+## - Review versions of providers to the latest version
+##############################################################################
 terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 4.0"
+      version = "~> 5.36.0"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = ">= 1.11.1"
+      version = ">= 2.25.2"
     }
     helm = {
       source  = "hashicorp/helm"
-      version = ">= 2.0.1"
+      version = ">= 2.12.1"
     }
     random = {
       source  = "hashicorp/random"
-      version = ">= 2.3.0"
+      version = ">= 3.0.1"
     }
     tls = {
       source  = "hashicorp/tls"
@@ -39,27 +42,27 @@ terraform {
     }
     local = {
       source  = "hashicorp/local"
-      version = ">= 1.2"
+      version = ">= 2.4.1"
     }
-    # null = {
-    #   source  = "hashicorp/null"
-    #   version = ">= 0.2"
-    # }
+    null = {
+      source  = "hashicorp/null"
+      version = ">= 3.2.2"
+    }
     time = {
       source  = "hashicorp/time"
-      version = ">= 0.7.2"
+      version = ">= 0.10.0"
     }
     utils = {
       source  = "cloudposse/utils"
-      version = ">= 0.20.1"
+      version = ">= 1.15.0"
     }
     cloudinit = {
       source  = "hashicorp/cloudinit"
-      version = ">= 0.2"
+      version = ">= 2.3.3"
     }
     external = {
       source  = "hashicorp/external"
-      version = ">= 0.2"
+      version = ">= 2.3.3"
     }
   }
 }
@@ -85,11 +88,9 @@ module "networking_layer" {
 }
 
 module "terraform-aws-modules" {
-  source  = "./hashicorp/terraform-aws-modules"
+  source  = "terraform-aws-modules/rds/aws"
   name    = "terraform-aws-modules"
-  terraform-aws-rds = {
-    version = "4.0.0"
-  }
+
 }
 
 # Runtime Layer (EKS, EC2)

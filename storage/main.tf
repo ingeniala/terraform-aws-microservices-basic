@@ -92,33 +92,39 @@ module "database_replica" {
   source                  = "terraform-aws-modules/rds/aws"
   version                 = "5.6.0"
   identifier              = "${local.name}-replica"
-## Aded becuase of the hashicorp/db	issue
+## Added the create_aws_db_instance to avoid the hashicorp/db	issue
   create_aws_db_instance  = local.replication_enabled
   aws_db_instance_class   = local.aws_db_instance_class
   aws_db_instance_name    = "${local.name}-replica"
   aws_dbinstance_region   = data.aws_availability_zones.available.names[0]
-  # Changed the db_instance for aws_db_instance because of the problme on hashicorp/db
+  # Changed the db_instance for aws_db_instance because of the problem on hashicorp/db
   # create_db_instance      = local.replication_enabled
   # Added aws_db_instance to avoid the bug on hashicorp/db that's not existsing
   # Source database. For cross-region use db_instance_arn
-  replicate_source_db     = module.database_master.db_instance_id
-  engine                  = local.engine
-  engine_version          = local.version
-  family                  = local.family
-  major_engine_version    = local.major_engine_version
-  allow_max_version_upgrade = false
-  allow_min_version_upgrade = true
-  allocated_storage       = local.allocated_storage
-  max_allocated_storage   = local.max_allocated_storage
-  create_random_password  = false
-  port                    = local.port
-  multi_az                = false
-  aws_db_subnet_group_name = aws_db_subnet_group.db_subnet_group.name
-#  db_subnet_group_name    = aws_db_subnet_group.db_subnet_group.name
-  vpc_security_group_ids  = [module.security_group.security_group_id]
-  backup_window           = "00:00-03:00"
-  maintenance_window      = "Tue:03:00-Tue:06:00"
-  apply_immediately       = true
+  
+  replicate_source_db             = module.database_master.db_instance_id
+  aws_engine                      = local.engine
+  aws_engine_version              = local.version
+#  engine                  = local.engine
+#  engine_version          = local.version
+#  family                  = local.family
+  aws_db_family                   = local.family
+  aws_db_major_engine_version     = local.major_engine_version
+#  major_engine_version           = local.major_engine_version
+  allow_max_version_upgrade       = false
+  allow_min_version_upgrade       = true
+  allocated_storage               = local.allocated_storage
+  max_allocated_storage           = local.max_allocated_storage
+  aws_create_random_password      = false
+  aws_port                        = local.port
+#  port                           = local.port
+  multi_az                        = false
+  aws_db_subnet_group_name        = aws_db_subnet_group.db_subnet_group.name
+#  db_subnet_group_name           = aws_db_subnet_group.db_subnet_group.name
+  vpc_security_group_ids          = [module.security_group.security_group_id]
+  backup_window                   = "00:00-03:00"
+  maintenance_window              = "Tue:03:00-Tue:06:00"
+  apply_immediately               = true
   enabled_cloudwatch_logs_exports = var.cloudwatch_logging_exports
   create_cloudwatch_log_group     = var.enable_cloudwatch_logging
 
