@@ -44,6 +44,10 @@ terraform {
       source  = "hashicorp/local"
       version = ">= 2.4.1"
     }
+    # db = {
+    #   source  = "hashicorp/db"
+    #   version = ">= 1.0.0"
+    # }
     null = {
       source  = "hashicorp/null"
       version = ">= 3.2.2"
@@ -89,7 +93,8 @@ module "networking_layer" {
 
 module "terraform-aws-modules" {
   source  = "terraform-aws-modules/rds/aws"
-  name    = "terraform-aws-modules"
+  version = "6.4.0"
+#  name    = "terraform-aws-modules"
 
 }
 

@@ -1,20 +1,23 @@
-
 data "aws_availability_zones" "available" {}
 
 locals {
-  name                  = var.db_name
-  engine                = var.engine
-  version               = var.engine_version
-  family                = join("",[var.engine,var.engine_version])  # DB parameter group
-  major_engine_version  = var.engine_version                        # DB option group
-  aws_db_instance_class = var.instance_type
+#  name                  = var.db_name
+  aws_db_instance_name  = var.db_name
+  aws_engine            = var.engine
+#  engine                = var.engine
+  aws_engine_version    = var.engine_version
+
+#  version               = var.engine_version
+  aws_db_family         = join("",[var.engine,var.engine_version])
+#  family                = join("",[var.engine,var.engine_version])  # DB parameter group
+  aws_db_major_engine_version = var.engine_version
+#  major_engine_version  = var.engine_version                        # DB option group
+  aws_db_instance_class = var.aws_db_instance_class
 #  instance_class        = var.instance_type
   allocated_storage     = var.allocated_storage
   max_allocated_storage = var.max_allocated_storage
   port                  = var.db_port
-
   replication_enabled = var.replication_enabled
-
   vpc_name = var.vpc_name
 
   tags = {
@@ -30,26 +33,32 @@ locals {
 
 module "database_master" {
   source  = "terraform-aws-modules/rds/aws"
-  version = "5.6.0"
+  version = "5.4.0"
 
   identifier = "${local.name}-master"
 
-  engine               = local.engine
-  engine_version       = local.version
-  family               = local.family
-  major_engine_version = local.major_engine_version
-  aws_db_instance_class = local.aws_db_instance_class
+  aws_engine            = local.engine
+#  engine               = local.engine
+#  engine_version        = local.version
+  aws_engine_version    = local.version
+  aws_db_family         = local.family
+#  family                = local.family
+  aws_db_major_engine_version = local.major_engine_version
+#  major_engine_version  = local.major_engine_version
+  aws_db_instance_class = local.instance_class
 #  instance_class       = local.instance_class
+  
   allocated_storage     = local.allocated_storage
-  max_allocated_storage = local.max_allocated_storage
+#  max_allocated_storage = local.max_allocated_storage
+  aws_max_allocated_storage = local.max_allocated_storage
   username               = var.db_user
   create_random_password = true
   port                   = local.port
   multi_az               = true
   db_subnet_group_name   = aws_db_subnet_group.db_subnet_group.name
   vpc_security_group_ids = [module.security_group.security_group_id]
-#  create_aws_db_parameter_group = true
-  create_db_parameter_group   = true
+  create_aws_db_parameter_group = true
+#  create_db_parameter_group   = true
 #  Agregados por Andres Kitaura
 #  2024-02-09
   # create_aws_db_parameter_group.name = "${local.name}-cluster-parameter-group"
@@ -90,7 +99,7 @@ module "database_master" {
 
 module "database_replica" {
   source                  = "terraform-aws-modules/rds/aws"
-  version                 = "5.6.0"
+  version                 = "5.4.0"
   identifier              = "${local.name}-replica"
 ## Added the create_aws_db_instance to avoid the hashicorp/db	issue
   create_aws_db_instance  = local.replication_enabled
