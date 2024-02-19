@@ -60,7 +60,7 @@ variable "allocated_storage" {
 variable "max_allocated_storage" {
   description = "Instance maximum allocated storage"
   type        = number
-  default     = 10
+  default     = 100
 }
 
 variable "vpc_id" {

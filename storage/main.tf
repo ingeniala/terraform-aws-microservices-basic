@@ -6,7 +6,6 @@ locals {
   aws_engine            = var.engine
 #  engine                = var.engine
   aws_engine_version    = var.engine_version
-
 #  version               = var.engine_version
   aws_db_family         = join("",[var.engine,var.engine_version])
 #  family                = join("",[var.engine,var.engine_version])  # DB parameter group
@@ -34,9 +33,10 @@ locals {
 module "database_master" {
   source  = "terraform-aws-modules/rds/aws"
   version = "5.4.0"
-
+  create_aws_db_instance = true
+#  create_db_instance = true
+#  aws_db_instance = local.replication_enabled
   identifier = "${local.name}-master"
-
   aws_engine            = local.engine
 #  engine               = local.engine
 #  engine_version        = local.version
@@ -47,7 +47,6 @@ module "database_master" {
 #  major_engine_version  = local.major_engine_version
   aws_db_instance_class = local.instance_class
 #  instance_class       = local.instance_class
-  
   allocated_storage     = local.allocated_storage
 #  max_allocated_storage = local.max_allocated_storage
   aws_max_allocated_storage = local.max_allocated_storage
@@ -91,6 +90,8 @@ module "database_master" {
   deletion_protection     = false
   storage_encrypted       = false
   tags = merge({Name = "${local.name}-master"},local.tags, var.tags_root)
+  
+
 }
 
 ################################################################################
