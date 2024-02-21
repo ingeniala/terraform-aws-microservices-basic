@@ -32,11 +32,12 @@ locals {
 
 module "database_master" {
   source  = "terraform-aws-modules/rds/aws"
-  version = "5.4.0"
+  version = "6.4.0"
   create_aws_db_instance = true
 #  create_db_instance = true
 #  aws_db_instance = local.replication_enabled
   identifier = "${local.name}-master"
+#  aws_db_instance_name = "${local.name}-master"
   aws_engine            = local.engine
 #  engine               = local.engine
 #  engine_version        = local.version
@@ -100,12 +101,13 @@ module "database_master" {
 
 module "database_replica" {
   source                  = "terraform-aws-modules/rds/aws"
-  version                 = "5.4.0"
+  version                 = "6.4.0"
   identifier              = "${local.name}-replica"
+#  aws_db_instance_name = "${local.name}-replica"
 ## Added the create_aws_db_instance to avoid the hashicorp/db	issue
   create_aws_db_instance  = local.replication_enabled
   aws_db_instance_class   = local.aws_db_instance_class
-  aws_db_instance_name    = "${local.name}-replica"
+#  aws_db_instance_name    = "${local.name}-replica"
   aws_dbinstance_region   = data.aws_availability_zones.available.names[0]
   # Changed the db_instance for aws_db_instance because of the problem on hashicorp/db
   # create_db_instance      = local.replication_enabled
@@ -149,14 +151,6 @@ module "database_replica" {
 ################################################################################
 # Supporting Resources
 ################################################################################
-data "db_subnet_group" "db_subnet_group" {
-  name = vpc.db_subnet_group_name
-  db_subnet_group = vpc.db_subnet_group
-  filter {
-    name   = "name"
-    values = [var.db_subnet_group_name]
-  }
-}
 
 resource "aws_db_subnet_group" "db_subnet_group" {
   description = "Database subnet group for ${local.name}"

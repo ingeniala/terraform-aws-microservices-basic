@@ -54,7 +54,7 @@ terraform {
     }
     utils = {
       source  = "cloudposse/utils"
-      version = ">= 1.15.0"
+      version = ">= 1.17.0"
     }
     cloudinit = {
       source  = "hashicorp/cloudinit"
@@ -85,13 +85,6 @@ module "networking_layer" {
   subnet_extra_mask_bits = var.vpc_subnet_extra_mask_bits
   enable_vpn             = var.vpc_enable_vpn
   tags_root              = local.tags
-}
-
-module "terraform-aws-modules" {
-  source  = "terraform-aws-modules/rds/aws"
-  version = "6.4.0"
-#  name    = "terraform-aws-modules"
-
 }
 
 # Runtime Layer (EKS, EC2)
@@ -192,6 +185,7 @@ module "storage_layer" {
 
   tags_root = local.tags
 }
+
 
 # Traffic Access (WAF, ApiGateway VPC Link) 
 
