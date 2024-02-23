@@ -190,7 +190,7 @@ module "waf" {
   scope = "CLOUDFRONT"
 
   default_action = "allow"
- 
+
   geo_match_statement_rules = var.waf_allow_global ? [] : [
     {
       name     = "allow-geo"

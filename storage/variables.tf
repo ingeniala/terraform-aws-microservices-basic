@@ -21,6 +21,12 @@ variable "db_user" {
   default     = "admin"
 }
 
+variable "db_password" {
+  description = "Database password to be set"
+  type        = string
+  default     = "admin"
+}
+
 variable "engine" {
     description = "Database engine to be set"
     type        = string
