@@ -1,8 +1,6 @@
 locals {
   apigw_name = var.apigw_name
-
   root_domain_name = var.domain_name
-
   tags = {
     Module = "terraform-aws-microservices-basic"
     Tier   = "traffic"
@@ -192,7 +190,7 @@ module "waf" {
   scope = "CLOUDFRONT"
 
   default_action = "allow"
- 
+
   geo_match_statement_rules = var.waf_allow_global ? [] : [
     {
       name     = "allow-geo"

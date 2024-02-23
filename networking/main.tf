@@ -2,14 +2,11 @@ data "aws_availability_zones" "available" {}
 
 locals {
   name   = var.vpc_name
-
   vpc_cidr = var.vpc_cidr_block
   azs      = slice(data.aws_availability_zones.available.names, 0, 2)
-  
   azs_count = length(local.azs)
   
   subnet_cidr_extra_mask = var.subnet_extra_mask_bits
-
   tags = merge({
     Module = "terraform-aws-microservices-basic"
     Tier   = "networking"
@@ -26,36 +23,34 @@ module "vpc" {
 
   name = local.name
   cidr = local.vpc_cidr
-
   azs               = local.azs
   private_subnets   = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, local.subnet_cidr_extra_mask, k)]
   public_subnets    = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, local.subnet_cidr_extra_mask, k+local.azs_count)]
   database_subnets  = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, local.subnet_cidr_extra_mask, k+local.azs_count*2)]
-
   enable_nat_gateway     = true
   single_nat_gateway     = true
   reuse_nat_ips          = true # <= Skip creation of EIPs for the NAT Gateways
   external_nat_ip_ids    = [aws_eip.nat_eip.id]
-  
   enable_vpn_gateway     = var.enable_vpn
-
   enable_dns_hostnames = true
   enable_dns_support   = true
-
-  create_database_subnet_group  = false
+  create_database_subnet_group  = true
+#  database_subnet_group_name = module.vpc.create_database_subnet_group([for k, v in local.azs : cidrsubnet(local.vpc_cidr, local.subnet_cidr_extra_mask, k+local.azs_count*2)])
 
   public_subnet_tags = {
     "kubernetes.io/role/elb" = 1
     "Type" = "public"
   }
+  database_subnet_tags = {
+    Module = "terraform-aws-microservices-basic"
+    "Type" = "privada"
+    Tier   = "database"
+    Tier2  = "networking"
+  }
 
   private_subnet_tags = {
     "kubernetes.io/role/internal-elb" = 1
     "Type" = "private"
-  }
-
-  database_subnet_tags = {
-    "Type" = "database"
   }
 
   tags = local.tags

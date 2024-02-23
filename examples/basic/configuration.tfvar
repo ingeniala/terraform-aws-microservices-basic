@@ -1,35 +1,39 @@
 # Global variables
 
 variable "env" {
-  description = "Environment name"
+  description = "Environment name. For example: development, staging, production"
+  nullable    = false
+  default     = "development"
   type        = string
-  default     = "dev" // dev, test, prod
 }
 
 variable "project" {
-  description = "Project name"
+  description = "Project name. For example: POCIngenia"
+  nullable    = false
+  default     = "POCIngenia"
   type        = string
-  default     = "POC-Ingenia"
 }
 
 variable "aws_profile" {
   description = "AWS Profile to use when interacting with resources during installation"
+  nullable    = false
   type        = string
-  default     = "default"
 }
 
 # Networking
 
 variable "vpc_cidr_block" {
-  description = "CIDR block for VPC"
+  description = "CIDR block for VPC. For example: 192.168.0.0/16"
+  nullable    = false
+  default     = "192.168.0.0/16"
   type        = string
-  default     = "10.1.0.0/16"
 }
 
 variable "vpc_subnet_extra_mask_bits" {
-  description = "Extra mask bits amount for performing subnetting within the VPC"
+  description = "Extra mask bits amount for performing subnetting within the VPC. For example, if the amount is 20, then the subnets will be: 192.168.0.0/20, 192.168.32.0/20, 192.168.64.0/20, 192.168.96.0/20"
+  default     = 20
+  nullable    = false
   type        = number
-  default     = 8
 }
 
 variable "vpc_enable_vpn" {
@@ -44,12 +48,14 @@ variable "eks_cluster_version" {
   description = "EKS Cluster version to be set"
   type        = string
   default     = "1.29"
+  nullable    = false
 }
 
 variable "eks_cluster_max_size" {
-  type        = number
   description = "EKS Cluster maximum amount of worker nodes"
-  default     = 10
+  type        = number
+  default     = 50
+  nullable    = false
 }
 
 variable "eks_cluster_auth_map_roles" {
@@ -71,63 +77,62 @@ variable "eks_cluster_auth_map_accounts" {
 }
 
 variable "eks_cluster_node_group_instance_types" {
-  type        = list(string)
   description = "EKS Cluster Main Node group instance types"
-  default     = ["t3.medium", "t3.large", "m5.large", "m5.xlarge", "m5.2xlarge", "m5.4xlarge"]
+  type        = list(string)
+#  default     = ["t3.small", "t3a.medium", "t3.large", "t3a.micro", "t3a.small", "t3a.large", "t3a.xlarge", "t3a.2xlarge", "m5.large", "m5a.large", "m5.xlarge", "m5a.xlarge", "m5.2xlarge", "m5a.2xlarge", "m5.4xlarge", "m5a.4xlarge", "m5.8xlarge", "m5a.8xlarge", "m5.12xlarge", "m5a.12xlarge", "m5.16xlarge", "m5a.16xlarge"]
+  default     = ["t3a.medium", "m5.2xlarge"]
 }
 
 variable "eks_cluster_node_group_ami" {
-  type        = string
   description = "EKS Cluster Main Node group AMI machine"
+  type        = string
   default     = "BOTTLEROCKET_x86_64"
 }
 
 variable "eks_cluster_node_group_platform" {
-  type        = string
   description = "EKS Cluster Main Node group platform"
+  type        = string
   default     = "bottlerocket"
 }
 
 variable "eks_cluster_node_group_capacity" {
-  type        = string
   description = "EKS Cluster Main Node group capacity type"
+  type        = string
   default     = "ON_DEMAND"
 }
 
 variable "eks_cluster_node_group_disk_size" {
-  type        = number
   description = "EKS Cluster Main Node group disk size, described in Gigabytes"
-  default     = 20
+  type        = number
+  default     = 50
 }
 
 variable "eks_addon_aws_lb_version" {
-  type        = string
   description = "AWS Load Balancer Controller Addon Version"
-  default     = "v2.4.7"
+  type        = string
+  default     = "v2.5.4"
 }
 
 variable "eks_addon_autoscaler_version" {
-  type        = string
   description = "EKS Cluster Autoscaler Addon Version"
-  default     = "v1.22.0"
+  type        = string
 }
 
 variable "eks_addon_ack_apigw2_version" {
   description = "EKS ACK Addon for ApiGatewayv2 Version"
   type        = string
-  default     = "v1.0.0"
 }
 
 variable "eks_ingress_controller_version" {
   description = "EKS Nginx Ingress Controller Version"
   type        = string
-  default     = "v1.0.0"
+  default     = "v3.4.2"
 }
 
 variable "bastion_instance_class" {
   description = "Bastion server instance class"
   type        = string
-  default     = "t3.micro"
+  default     = "t3.small"
 }
 
 variable "bastion_public_visible" {
@@ -141,19 +146,18 @@ variable "bastion_public_visible" {
 variable "registry_repositories" {
   description = "List of repositories to create in ECR"
   type        = list(string)
-  default     = ["nginx", "redis", "mysql", "postgres", "php", "python", "java", "node", "go", "dotnet", "ruby", "phpfpm"]
 }
 
 variable "registry_protected_tags" {
   description = "List of ECR protected tags which won't never be expired on any repository."
   type        = list(string)
-  default     = ["latest"]
+  default     = []
 }
 
 variable "registry_full_access_users" {
   description = "List of users with full access privileges to ECR."
   type        = list(string)
-  default     = ["ChangeMe", "ARN Example for user ARN full access: arn:aws:iam::123456789012:user/ChangeMe"]
+  default     = []
 }
 
 # Storage
@@ -161,26 +165,25 @@ variable "registry_full_access_users" {
 variable "database_port" {
   description = "Database Instance Port to be set"
   type        = number
-  default     = 3306
-
+  default     = 5432
 }
 
 variable "database_user" {
   description = "Database user to be set"
   type        = string
-  default     = "admin"
+  default     = "postgres"
 }
 
 variable "database_engine" {
     description = "Database engine to be set"
     type        = string
-    default     = "mysql"
+    default     = "postgres"
 }
 
 variable "database_engine_version" {
   description = "Database engine version to be set"
   type        = string
-  default     = "5.7.30"
+  default     = "16.1"
 }
 
 variable "database_replication_enabled" {
@@ -192,7 +195,7 @@ variable "database_replication_enabled" {
 variable "database_instance_type" {
   description = "Instace type to use for the database"
   type        = string
-  default     = "db.t3.micro"
+  default     = "db.t4g.medium"
 }
 
 variable "database_allocated_storage" {
@@ -222,7 +225,7 @@ variable "database_cloudwatch_logging_exports" {
 variable "database_backup_retention_period" {
   description = "Database backup retention period"
   type        = number
-  default     = 2
+  default     = 5
 }
 
 # Traffic Access
@@ -230,13 +233,13 @@ variable "database_backup_retention_period" {
 variable "traffic_main_domain_name" {
   description = "Main domain name managed by AWS of the solution"
   type        = string
-  default     = "example.com"
+  default     = "ingenia.dev"
 }
 
 variable "traffic_apigw_domain_name" {
   description = "Domain name managed by AWS and used for exposing services within the API Gateway"
   type        = string
-  default     = "api.example.com"
+  default     = "api.ingenia.dev"
 }
 
 variable "traffic_apigw_api_version" {
@@ -308,7 +311,7 @@ variable "traffic_api_extra_routes" {
 variable "traffic_certificate_subjective_names" {
   description = "List of subjective names to include in the main ACM"
   type        = list(string)
-  default     = ["example.com"]
+  default     = []
 }
 
 variable "traffic_waf_name" {
@@ -338,5 +341,5 @@ variable "traffic_waf_allowed_countries" {
 variable "frontend_subdomain" {
   description = "Frontend subdomain to configure in Route53 and CDN distribution"
   type        = string
-  default     = ""
+  default     = "front-dev"
 }

@@ -1,20 +1,68 @@
+##############################################################################
+## Main
+## Author: @ingeniala
+## Date: 2022-11-01
+## Description: Terraform automation to create AWS resources,
+##              using the AWS Terraform Provider
+##              https://registry.terraform.io/providers/hashicorp/aws
+##              https://github.com/ingeniala/terraform-aws-microservices-basic
+##              https://github.com/cloudposse/terraform-aws-ecr
+##              
+## Modified: 2024.02.09 - Andres Kitaura
+## Description: Refactored code and added automated CICD pipeline 
+## witch will deploy the infrastructure using Terraform just by 
+## pushing to github
+##  
+##############################################################################
+## 2024.02.14 - Andres Kitaura
+## - Added CICD by Andres Kitaura
+## - Review versions of providers to the latest version
+##############################################################################
 terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 4.0"
+      version = "~> 5.37.0"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = ">= 2.10"
+      version = ">= 2.25.2"
     }
     helm = {
       source  = "hashicorp/helm"
-      version = ">= 2.6.0"
+      version = ">= 2.12.1"
     }
     random = {
       source  = "hashicorp/random"
-      version = ">= 3.5"
+      version = ">= 3.0.1"
+    }
+    tls = {
+      source  = "hashicorp/tls"
+      version = ">= 3.0"
+    }
+    local = {
+      source  = "hashicorp/local"
+      version = ">= 2.4.1"
+    }
+    null = {
+      source  = "hashicorp/null"
+      version = ">= 3.2.2"
+    }
+    time = {
+      source  = "hashicorp/time"
+      version = ">= 0.10.0"
+    }
+    utils = {
+      source  = "cloudposse/utils"
+      version = ">= 1.17.0"
+    }
+    cloudinit = {
+      source  = "hashicorp/cloudinit"
+      version = ">= 2.3.3"
+    }
+    external = {
+      source  = "hashicorp/external"
+      version = ">= 2.3.3"
     }
   }
 }
@@ -138,7 +186,8 @@ module "storage_layer" {
   tags_root = local.tags
 }
 
-# Traffic Access (WAF, ApiGateway VPC Link)
+
+# Traffic Access (WAF, ApiGateway VPC Link) 
 
 module "traffic_access_layer" {
   source = "./traffic"
